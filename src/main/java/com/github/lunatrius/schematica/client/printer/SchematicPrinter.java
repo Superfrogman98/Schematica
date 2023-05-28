@@ -14,6 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -146,6 +147,8 @@ public class SchematicPrinter {
         final int wz = this.schematic.position.z + z;
 
         final Block block = this.schematic.getBlock(x, y, z);
+        TileEntity TE = this.schematic.getTileEntity(x, y, z);
+        TileEntity realTE = world.getTileEntity(wx, wy, wz);
         final Block realBlock = world.getBlock(wx, wy, wz);
         final int metadata = this.schematic.getBlockMetadata(x, y, z);
         final int realMetadata = world.getBlockMetadata(wx, wy, wz);
