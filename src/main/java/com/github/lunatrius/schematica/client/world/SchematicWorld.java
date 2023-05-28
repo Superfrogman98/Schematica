@@ -28,6 +28,7 @@ import com.github.lunatrius.schematica.world.storage.Schematic;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gcewing.architecture.ShapeTE;
 
 public class SchematicWorld extends World {
 
@@ -234,6 +235,7 @@ public class SchematicWorld extends World {
             for (int z = 0; z < length; z++) {
                 for (int x = 0; x < width; x++) {
                     try {
+
                         getBlock(x, y, length - 1 - z).rotateBlock(this, x, y, length - 1 - z, ForgeDirection.UP);
                     } catch (Exception e) {
                         Reference.logger.debug("Failed to rotate block!", e);
@@ -256,6 +258,38 @@ public class SchematicWorld extends World {
             if (tileEntity instanceof TileEntitySkull && tileEntity.blockMetadata == 0x1) {
                 TileEntitySkull skullTileEntity = (TileEntitySkull) tileEntity;
                 skullTileEntity.func_145903_a((skullTileEntity.func_145906_b() + 12) & 15);
+            }
+
+            if (tileEntity instanceof ShapeTE) {
+                switch (((ShapeTE) tileEntity).side) {
+                    case 0://top
+                        ((ShapeTE) tileEntity).setTurn((((ShapeTE) tileEntity).turn + 3) % 4);
+                        break;
+                    case 1://bottom
+                        ((ShapeTE) tileEntity).setTurn((((ShapeTE) tileEntity).turn + 1) % 4);
+                        break;
+                    case 2://west->north
+                        ((ShapeTE) tileEntity).setSide(5);
+                        break;
+                    case 3://east->south
+                        ((ShapeTE) tileEntity).setSide(4);
+                        break;
+                    case 4://north->west
+                        ((ShapeTE) tileEntity).setSide(2);
+                        break;
+                    case 5://south->east
+                        ((ShapeTE) tileEntity).setSide(3);
+                        break;
+                    default:
+                        ((ShapeTE) tileEntity).setTurn((((ShapeTE) tileEntity).turn + 0) % 4);
+                        break;
+                }
+
+                System.out.printf(
+                        "SchematicWorld.rotate: material:%s Side:%s Turn:%s\n",
+                        ((ShapeTE) tileEntity).baseBlockState.getBlock(),
+                        ((ShapeTE) tileEntity).side,
+                        ((ShapeTE) tileEntity).turn);
             }
 
             schematicRotated.setTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, tileEntity);

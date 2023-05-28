@@ -42,8 +42,11 @@ public abstract class CommonProxy {
     public boolean isLoadEnabled = true;
     public boolean GTNH = false;
 
+    public boolean architectureCraft = false;
+
     public void preInit(FMLPreInitializationEvent event) {
         GTNH = Loader.isModLoaded("dreamcraft");
+        architectureCraft = Loader.isModLoaded("ArchitectureCraft");
         Reference.logger = event.getModLog();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
     }
