@@ -2,6 +2,7 @@ package com.github.lunatrius.schematica.client.world;
 
 import java.util.List;
 
+import com.github.lunatrius.schematica.nbt.ForgeMultipart;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -17,6 +18,8 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import codechicken.multipart.TileMultipart;
 
 import com.github.lunatrius.core.util.vector.Vector3f;
 import com.github.lunatrius.core.util.vector.Vector3i;
@@ -258,38 +261,36 @@ public class SchematicWorld extends World {
             if (tileEntity instanceof TileEntitySkull && tileEntity.blockMetadata == 0x1) {
                 TileEntitySkull skullTileEntity = (TileEntitySkull) tileEntity;
                 skullTileEntity.func_145903_a((skullTileEntity.func_145906_b() + 12) & 15);
-            }
-
-            if (tileEntity instanceof ShapeTE) {
+            } else if (tileEntity instanceof ShapeTE) {
                 switch (((ShapeTE) tileEntity).side) {
-                    case 0://top
+                    case 0:// top
                         ((ShapeTE) tileEntity).setTurn((((ShapeTE) tileEntity).turn + 3) % 4);
                         break;
-                    case 1://bottom
+                    case 1:// bottom
                         ((ShapeTE) tileEntity).setTurn((((ShapeTE) tileEntity).turn + 1) % 4);
                         break;
-                    case 2://west->north
+                    case 2:// west->north
                         ((ShapeTE) tileEntity).setSide(5);
                         break;
-                    case 3://east->south
+                    case 3:// east->south
                         ((ShapeTE) tileEntity).setSide(4);
                         break;
-                    case 4://north->west
+                    case 4:// north->west
                         ((ShapeTE) tileEntity).setSide(2);
                         break;
-                    case 5://south->east
+                    case 5:// south->east
                         ((ShapeTE) tileEntity).setSide(3);
                         break;
                     default:
                         ((ShapeTE) tileEntity).setTurn((((ShapeTE) tileEntity).turn + 0) % 4);
                         break;
                 }
-
-                System.out.printf(
-                        "SchematicWorld.rotate: material:%s Side:%s Turn:%s\n",
-                        ((ShapeTE) tileEntity).baseBlockState.getBlock(),
-                        ((ShapeTE) tileEntity).side,
-                        ((ShapeTE) tileEntity).turn);
+                /*
+                 * System.out.printf( "SchematicWorld.rotate: material:%s Side:%s Turn:%s\n", ((ShapeTE)
+                 * tileEntity).baseBlockState.getBlock(), ((ShapeTE) tileEntity).side, ((ShapeTE) tileEntity).turn);
+                 */
+            } else if (tileEntity instanceof TileMultipart) {
+                //System.out.printf("SchematicWorld.rotate: NBT: %s", tileEntity);
             }
 
             schematicRotated.setTileEntity(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, tileEntity);
